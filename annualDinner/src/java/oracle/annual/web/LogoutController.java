@@ -20,6 +20,6 @@ public class LogoutController {
     @RequestMapping("/logout")
     public String logout(SessionStatus status) {
         status.setComplete();
-        return "login";
+        return "logout";
     }
 }

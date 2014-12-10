@@ -47,8 +47,10 @@ public class BetController {
             modelAndView.setViewName("alreadybet");
         } else {
             modelAndView.setViewName("afterbet");
+        modelAndView.addObject("rank", ekey.getRank());
+        modelAndView.addObject("date", ekey.getStdDate());
+        modelAndView.addObject("coins", ekey.getCoins());
         }
-        modelAndView.addObject("ekey", ekey);
         return modelAndView;
     }
 }

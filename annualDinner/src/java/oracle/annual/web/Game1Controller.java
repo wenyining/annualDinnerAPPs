@@ -7,18 +7,20 @@ package oracle.annual.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
  *
  * @author JAWEN
  */
-@Controller
-public class GameController {
 
-    @RequestMapping("/game")
-    public ModelAndView gameCenter() {
-        ModelAndView modelAndView = new ModelAndView("game", "command", null);
+@Controller
+public class Game1Controller {
+    
+    @RequestMapping("/game1")
+    public ModelAndView gamedisplay() {
+        ModelAndView modelAndView = new ModelAndView("game1", "command", null);
         return modelAndView;
     }
 }

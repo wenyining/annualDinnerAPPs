@@ -13,12 +13,13 @@ import org.springframework.web.servlet.ModelAndView;
  *
  * @author JAWEN
  */
-@Controller
-public class GameController {
 
-    @RequestMapping("/game")
-    public ModelAndView gameCenter() {
-        ModelAndView modelAndView = new ModelAndView("game", "command", null);
+@Controller
+public class Game2Controller {
+
+    @RequestMapping("/game2")
+    public ModelAndView gamedisplay() {
+        ModelAndView modelAndView = new ModelAndView("game2", "command", null);
         return modelAndView;
     }
 }

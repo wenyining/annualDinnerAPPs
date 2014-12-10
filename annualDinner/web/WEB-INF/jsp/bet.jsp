@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:include page="header.jsp" />
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>  
 <!DOCTYPE html>
 <html class="ui-mobile-rendering">
@@ -24,7 +25,7 @@
         </div>
 
         <div data-role="content" data-theme="b">
-            <h3>${user},Welcome to Annual Dinner Game Center</h3>
+            <h3><%= session.getAttribute("login") %>,Welcome to Annual Dinner Game Center</h3>
             <p>请选择您想要参加的游戏和竞标价</p>
             <p>每个人每个游戏只有一次投注机会</p>
             <form:form action="bet" method="POST">

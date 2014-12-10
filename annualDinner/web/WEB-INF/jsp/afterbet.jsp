@@ -1,12 +1,11 @@
 <%-- 
-    Document   : game1
-    Created on : 2014-12-8, 11:00:40
+    Document   : addEmployee
+    Created on : 2014-12-2, 19:19:20
     Author     : JAWEN
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="header.jsp" />
-<!DOCTYPE html>
 <html class="ui-mobile-rendering">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,33 +19,23 @@
     <body>
         <div data-role="header" data-theme="b">
             <a href="game" data-icon="back" class="back ui-btn-left" id="back">Back</a>
-            <h1>气象专家</h1>
+            <h1>投票成功！</h1>
         </div>
 
         <div data-role="content" data-theme="b">
-            <h3>${UserName},动起来吧！！！</h3>
-            <p>规则如下：</p>
-            <p>秦岭淮河线划分两区域(南方/北方)</p>
-            <p>主持人播报不同地理位置的天气预报,该位置所在区域(南/北)的玩家对此做出相应的反应</p>
+            <h3><%= session.getAttribute("login") %>, 您现在排在第${ekey.getRank()} 位。</h3>
+            <p>具体信息如下：</p>
 
             <ol data-role="listview" >
-                <li>小雨拍肩</li>
-                <li>中雨拍手</li>
-                <li>大雨拍腿</li>
+                <li>金币： ${ekey.getCoins()}</li>
+                <li>时间： ${ekey.getStdDate()}</li>
             </ol>
-            <p>参与均有奖</p>
         </div>
-        <ul data-role="listview" data-theme="b">
-            <li><a href="bet">参加</a></li>
-        </ul>
             
         <script>
             $(document).ready(function () {
                 $('#back').click(function () {
                     response.sendRedirect("game");
-                });
-                $('#logout').click(function () {
-                    response.sendRedirect("logout");
                 });
             });            
         </script>

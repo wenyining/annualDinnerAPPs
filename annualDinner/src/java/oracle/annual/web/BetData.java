@@ -5,28 +5,14 @@
  */
 package oracle.annual.web;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-
 /**
  *
  * @author JAWEN
  */
 public class BetData {
 
-    private String emailAddr;
     private int gameid;
     private int coins;
-    private Calendar cal;
-
-    public String getEmailAddr() {
-        return emailAddr;
-    }
-
-    public void setEmailAddr(String emailAddr) {
-        this.emailAddr = emailAddr;
-    }
 
     public int getGameid() {
         return gameid;
@@ -42,22 +28,5 @@ public class BetData {
 
     public void setCoins(int coins) {
         this.coins = coins;
-    }
-
-    public Calendar getCal() {
-        return cal;
-    }
-
-    public void setCal(Calendar cal) {
-        this.cal = cal;
-    }
-
-    public BetData() {
-        cal = Calendar.getInstance();
-    }
-
-    public String getStdDate() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-        return dateFormat.format(cal);
     }
 }

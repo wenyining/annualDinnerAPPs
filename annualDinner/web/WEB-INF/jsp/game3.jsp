@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:include page="header.jsp" />
 <!DOCTYPE html>
 <html class="ui-mobile-rendering">
     <head>
@@ -17,13 +18,13 @@
         <script src="js/jquery.mobile-1.0.1.min.js"></script>
     </head>
     <body>
-        <div data-role="header" data-theme="a">
-            <a href="#home" data-icon="back" class="back ui-btn-left">Back</a>
+        <div data-role="header" data-theme="b">
+            <a href="game" data-icon="back" class="back ui-btn-left" id="back">Back</a>
             <h1>头脑风暴</h1>
         </div>
 
         <div data-role="content" data-theme="b">
-            <h3>${user},开动你的大脑</h3>
+            <h3><%= session.getAttribute("login") %>,开动你的大脑</h3>
             <p>规则如下：</p>
 
             <ol data-role="listview" >
@@ -36,5 +37,16 @@
         <ul data-role="listview" data-theme="b">
             <li><a href="bet">参加</a></li>
         </ul>
+            
+        <script>
+            $(document).ready(function () {
+                $('#back').click(function () {
+                    response.sendRedirect("game");
+                });
+                $('#logout').click(function () {
+                    response.sendRedirect("logout");
+                });
+            });            
+        </script>
     </body>
 </html>

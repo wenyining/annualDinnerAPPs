@@ -23,12 +23,12 @@
         </div>
 
         <div data-role="content" data-theme="b">
-            <h3><%= session.getAttribute("login") %>, 您现在排在第${ekey.getRank()} 位。</h3>
+            <h3><%= session.getAttribute("login") %>, 您现在排在第${rank} 位。</h3>
             <p>具体信息如下：</p>
 
             <ol data-role="listview" >
-                <li>金币： ${ekey.getCoins()}</li>
-                <li>时间： ${ekey.getStdDate()}</li>
+                <li>金币： ${coins}</li>
+                <li>时间： ${date}</li>
             </ol>
         </div>
             

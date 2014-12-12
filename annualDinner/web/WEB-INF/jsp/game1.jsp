@@ -20,7 +20,7 @@
     <body>
         <div data-role="header" data-theme="b">
             <a href="game" data-icon="back" class="back ui-btn-left" id="back">Back</a>
-            <a href="logout" class="back ui-btn-right" id="logout">Logout</a>
+            <a href="logout" class="ui-btn-right" id="logout">Logout</a>
             <h1>爱拼才会赢</h1>
         </div>
 

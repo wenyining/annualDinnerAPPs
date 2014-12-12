@@ -20,6 +20,7 @@
     <body>
         <div data-role="header" data-theme="b">
             <h1>Welcome to Annual Dinner Game Center</h1>
+            <a href="logout" class="ui-btn-right" id="logout">Logout</a>
         </div>
 
         <div data-role="content" >

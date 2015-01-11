@@ -11,16 +11,8 @@
     <form:form method="POST" action="employee/addresult">
         <table>
             <tr>
-                <td><form:label path="emailAddr">Email Address</form:label></td>
+                <td><form:label path="emailAddr">昵称</form:label></td>
                 <td><form:input path="emailAddr" /></td>
-            </tr>
-            <tr>
-                <td><form:label path="employeeID">Employee ID</form:label></td>
-                <td><form:input path="employeeID" /></td>
-            </tr>
-            <tr>
-                <td><form:label path="nickname">Nickname</form:label></td>
-                <td><form:input path="nickname" /></td>
             </tr>
             <tr>
                 <td colspan="2">

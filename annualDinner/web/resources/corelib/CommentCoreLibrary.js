@@ -3,58 +3,68 @@
  * @license MIT
  * @author Jim Chen
  */
-var BinArray = (function(){
-	var BinArray = {};
-	BinArray.bsearch = function(arr, what, how){
-		if(arr.length === 0) {
-			return 0;
-		}
-		if(how(what,arr[0]) < 0) {
-			return 0;
-		}
-		if(how(what,arr[arr.length - 1]) >=0) {
-			return arr.length;
-		}
-		var low =0;
-		var i = 0;
-		var count = 0;
-		var high = arr.length - 1;
-		while(low<=high){
-			i = Math.floor((high + low + 1)/2);
-			count++;
-			if(how(what,arr[i-1])>=0 && how(what,arr[i])<0){
-				return i;
-			}
-			if(how(what,arr[i-1])<0){
-				high = i-1;
-			}else if(how(what,arr[i])>=0){
-				low = i;
-			}else {
-				console.error('Program Error');
-			}
-			if(count > 1500) { console.error('Too many run cycles.'); }
-		}
-		return -1; // Never actually run
-	};
-	BinArray.binsert = function(arr, what, how){
-		var index = BinArray.bsearch(arr,what,how);
-		arr.splice(index,0,what);
-		return index;
-	};
-	return BinArray;
+var BinArray = (function () {
+    var BinArray = {};
+    BinArray.bsearch = function (arr, what, how) {
+        if (arr.length === 0) {
+            return 0;
+        }
+        if (how(what, arr[0]) < 0) {
+            return 0;
+        }
+        if (how(what, arr[arr.length - 1]) >= 0) {
+            return arr.length;
+        }
+        var low = 0;
+        var i = 0;
+        var count = 0;
+        var high = arr.length - 1;
+        while (low <= high) {
+            i = Math.floor((high + low + 1) / 2);
+            count++;
+            if (how(what, arr[i - 1]) >= 0 && how(what, arr[i]) < 0) {
+                return i;
+            }
+            if (how(what, arr[i - 1]) < 0) {
+                high = i - 1;
+            } else if (how(what, arr[i]) >= 0) {
+                low = i;
+            } else {
+                console.error('Program Error');
+            }
+            if (count > 1500) {
+                console.error('Too many run cycles.');
+            }
+        }
+        return -1; // Never actually run
+    };
+    BinArray.binsert = function (arr, what, how) {
+        var index = BinArray.bsearch(arr, what, how);
+        arr.splice(index, 0, what);
+        return index;
+    };
+    return BinArray;
 })();
 
 var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
+    for (var p in b)
+        if (b.hasOwnProperty(p))
+            d[p] = b[p];
+    function __() {
+        this.constructor = d;
+    }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
 
 var CommentSpaceAllocator = (function () {
     function CommentSpaceAllocator(width, height) {
-        if (typeof width === "undefined") { width = 0; }
-        if (typeof height === "undefined") { height = 0; }
+        if (typeof width === "undefined") {
+            width = 0;
+        }
+        if (typeof height === "undefined") {
+            height = 0;
+        }
         this._pools = [
             []
         ];
@@ -179,14 +189,20 @@ var AnchorCommentSpaceAllocator = (function (_super) {
 })(CommentSpaceAllocator);
 
 var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
+    for (var p in b)
+        if (b.hasOwnProperty(p))
+            d[p] = b[p];
+    function __() {
+        this.constructor = d;
+    }
     __.prototype = b.prototype;
     d.prototype = new __();
 };
 var CoreComment = (function () {
     function CoreComment(parent, init) {
-        if (typeof init === "undefined") { init = {}; }
+        if (typeof init === "undefined") {
+            init = {};
+        }
         this.mode = 1;
         this.stime = 0;
         this.text = "";
@@ -283,7 +299,9 @@ var CoreComment = (function () {
         }
     }
     CoreComment.prototype.init = function (recycle) {
-        if (typeof recycle === "undefined") { recycle = null; }
+        if (typeof recycle === "undefined") {
+            recycle = null;
+        }
         if (recycle !== null) {
             this.dom = recycle.dom;
         } else {
@@ -601,7 +619,9 @@ var ScrollComment = (function (_super) {
     });
 
     ScrollComment.prototype.init = function (recycle) {
-        if (typeof recycle === "undefined") { recycle = null; }
+        if (typeof recycle === "undefined") {
+            recycle = null;
+        }
         _super.prototype.init.call(this, recycle);
         this.x = this.parent.width;
         if (this.parent.options.scroll.opacity < 1) {
@@ -621,46 +641,46 @@ var ScrollComment = (function (_super) {
  * @license MIT
  * @author Jim Chen
  */
-function CommentFilter(){
-	this.modifiers = [];
-	this.runtime = null;
-	this.allowTypes = {
-		"1":true,
-		"4":true,
-		"5":true,
-		"6":true,
-		"7":true,
-		"8":true,
-		"17":true
-	};
-	this.doModify = function(cmt){
-		for(var k=0;k<this.modifiers.length;k++){
-			cmt = this.modifiers[k](cmt);
-		}
-		return cmt;
-	};
-	this.beforeSend = function(cmt){
-		return cmt;
-	}
-	this.doValidate = function(cmtData){
-		if(!this.allowTypes[cmtData.mode])
-			return false;
-		return true;
-	};
-	this.addRule = function(rule){
-		
-	};
-	this.addModifier = function(f){
-		this.modifiers.push(f);
-	};
-	this.runtimeFilter = function(cmt){
-		if(this.runtime == null)
-			return cmt;
-		return this.runtime(cmt);
-	};
-	this.setRuntimeFilter = function(f){
-		this.runtime = f;
-	}
+function CommentFilter() {
+    this.modifiers = [];
+    this.runtime = null;
+    this.allowTypes = {
+        "1": true,
+        "4": true,
+        "5": true,
+        "6": true,
+        "7": true,
+        "8": true,
+        "17": true
+    };
+    this.doModify = function (cmt) {
+        for (var k = 0; k < this.modifiers.length; k++) {
+            cmt = this.modifiers[k](cmt);
+        }
+        return cmt;
+    };
+    this.beforeSend = function (cmt) {
+        return cmt;
+    }
+    this.doValidate = function (cmtData) {
+        if (!this.allowTypes[cmtData.mode])
+            return false;
+        return true;
+    };
+    this.addRule = function (rule) {
+
+    };
+    this.addModifier = function (f) {
+        this.modifiers.push(f);
+    };
+    this.runtimeFilter = function (cmt) {
+        if (this.runtime == null)
+            return cmt;
+        return this.runtime(cmt);
+    };
+    this.setRuntimeFilter = function (f) {
+        this.runtime = f;
+    }
 }
 
 /*!
@@ -670,284 +690,354 @@ function CommentFilter(){
  * 
  * Copyright (c) 2014 Jim Chen
  */
-var CommentManager = (function() {
-	var getRotMatrix = function(yrot, zrot) {
-		// Courtesy of @StarBrilliant, re-adapted to look better
-		var DEG2RAD = Math.PI/180;
-		var yr = yrot * DEG2RAD;
-		var zr = zrot * DEG2RAD;
-		var COS = Math.cos;
-		var SIN = Math.sin;
-		var matrix = [
-			COS(yr) * COS(zr)    , COS(yr) * SIN(zr)     , SIN(yr)  , 0,
-			(-SIN(zr))           , COS(zr)               , 0        , 0,
-			(-SIN(yr) * COS(zr)) , (-SIN(yr) * SIN(zr))  , COS(yr)  , 0,
-			0                    , 0                     , 0        , 1
-		];
-		// CSS does not recognize scientific notation (e.g. 1e-6), truncating it.
-		for(var i = 0; i < matrix.length;i++){
-			if(Math.abs(matrix[i]) < 0.000001){
-				matrix[i] = 0;
-			}
-		}
-		return "matrix3d(" + matrix.join(",") + ")";
-	};
-	
-	function CommentManager(stageObject){
-		var __timer = 0;
-		this._listeners = {};
-		this.stage = stageObject;
-		this.options = {
-			global:{
-				opacity:1,
-				scale:1,
-				className:"cmt"
-			},
-			scroll:{
-				opacity:1,
-				scale:1
-			},
-			limit: 0
-		};
-		this.timeline = [];
-		this.runline = [];
-		this.position = 0;
-		this.limiter = 0;
-		this.filter = null;
-		this.csa = {
-			scroll: new CommentSpaceAllocator(0,0),
-			top:new AnchorCommentSpaceAllocator(0,0),
-			bottom:new AnchorCommentSpaceAllocator(0,0),
-			reverse:new CommentSpaceAllocator(0,0),
-			scrollbtm:new CommentSpaceAllocator(0,0)
-		};
-		/** Precompute the offset width **/
-		this.width = this.stage.offsetWidth;
-		this.height = this.stage.offsetHeight;
-		this.startTimer = function(){
-			if(__timer > 0)
-				return;
-			var lastTPos = new Date().getTime();
-			var cmMgr = this;
-			__timer = window.setInterval(function(){
-				var elapsed = new Date().getTime() - lastTPos;
-				lastTPos = new Date().getTime();
-				cmMgr.onTimerEvent(elapsed,cmMgr);
-			},10);
-		};
-		this.stopTimer = function(){
-			window.clearInterval(__timer);
-			__timer = 0;
-		};
-	}
+var CommentManager = (function () {
+    var getRotMatrix = function (yrot, zrot) {
+        // Courtesy of @StarBrilliant, re-adapted to look better
+        var DEG2RAD = Math.PI / 180;
+        var yr = yrot * DEG2RAD;
+        var zr = zrot * DEG2RAD;
+        var COS = Math.cos;
+        var SIN = Math.sin;
+        var matrix = [
+            COS(yr) * COS(zr), COS(yr) * SIN(zr), SIN(yr), 0,
+            (-SIN(zr)), COS(zr), 0, 0,
+            (-SIN(yr) * COS(zr)), (-SIN(yr) * SIN(zr)), COS(yr), 0,
+            0, 0, 0, 1
+        ];
+        // CSS does not recognize scientific notation (e.g. 1e-6), truncating it.
+        for (var i = 0; i < matrix.length; i++) {
+            if (Math.abs(matrix[i]) < 0.000001) {
+                matrix[i] = 0;
+            }
+        }
+        return "matrix3d(" + matrix.join(",") + ")";
+    };
 
-	/** Public **/
-	CommentManager.prototype.stop = function(){
-		this.stopTimer();
-	};
+    function CommentManager(stageObject) {
+        var __timer = 0;
+        this._listeners = {};
+        this.stage = stageObject;
+        this.options = {
+            global: {
+                opacity: 1,
+                scale: 1,
+                className: "cmt"
+            },
+            scroll: {
+                opacity: 1,
+                scale: 1
+            },
+            limit: 0
+        };
+        this.timeline = [];
+        this.runline = [];
+        this.position = 0;
+        this.limiter = 0;
+        this.filter = null;
+        this.csa = {
+            scroll: new CommentSpaceAllocator(0, 0),
+            top: new AnchorCommentSpaceAllocator(0, 0),
+            bottom: new AnchorCommentSpaceAllocator(0, 0),
+            reverse: new CommentSpaceAllocator(0, 0),
+            scrollbtm: new CommentSpaceAllocator(0, 0)
+        };
+        /** Precompute the offset width **/
+        this.width = this.stage.offsetWidth;
+        this.height = this.stage.offsetHeight;
+        this.startTimer = function () {
+            if (__timer > 0)
+                return;
+            var lastTPos = new Date().getTime();
+            var cmMgr = this;
+            __timer = window.setInterval(function () {
+                var elapsed = new Date().getTime() - lastTPos;
+                lastTPos = new Date().getTime();
+                cmMgr.onTimerEvent(elapsed, cmMgr);
+            }, 10);
+        };
+        this.stopTimer = function () {
+            window.clearInterval(__timer);
+            __timer = 0;
+        };
+    }
 
-	CommentManager.prototype.start = function(){
-		this.startTimer();
-	};
+    /** Public **/
+    CommentManager.prototype.stop = function () {
+        this.stopTimer();
+    };
 
-	CommentManager.prototype.seek = function(time){
-		this.position = BinArray.bsearch(this.timeline, time, function(a,b){
-			if(a < b.stime) return -1
-			else if(a > b.stime) return 1;
-			else return 0;
-		});
-	};
+    CommentManager.prototype.start = function () {
+        this.startTimer();
+    };
 
-	CommentManager.prototype.validate = function(cmt){
-		if(cmt == null)
-			return false;
-		return this.filter.doValidate(cmt);
-	};
+    CommentManager.prototype.seek = function (time) {
+        this.position = BinArray.bsearch(this.timeline, time, function (a, b) {
+            if (a < b.stime)
+                return -1
+            else if (a > b.stime)
+                return 1;
+            else
+                return 0;
+        });
+    };
 
-	CommentManager.prototype.load = function(a){
-		this.timeline = a;
-		this.timeline.sort(function(a,b){
-			if(a.stime > b.stime) return 2;
-			else if(a.stime < b.stime) return -2;
-			else{
-				if(a.date > b.date) return 1;
-				else if(a.date < b.date) return -1;
-				else if(a.dbid != null && b.dbid != null){
-					if(a.dbid > b.dbid) return 1;
-					else if(a.dbid < b.dbid) return -1;
-					return 0;
-				}else
-					return 0;
-			}
-		});
-		this.dispatchEvent("load");
-	};
+    CommentManager.prototype.validate = function (cmt) {
+        if (cmt == null)
+            return false;
+        return this.filter.doValidate(cmt);
+    };
 
-	CommentManager.prototype.insert = function(c){
-		var index = BinArray.binsert(this.timeline, c, function(a,b){
-			if(a.stime > b.stime) return 2;
-			else if(a.stime < b.stime) return -2;
-			else{
-				if(a.date > b.date) return 1;
-				else if(a.date < b.date) return -1;
-				else if(a.dbid != null && b.dbid != null){
-					if(a.dbid > b.dbid) return 1;
-					else if(a.dbid < b.dbid) return -1;
-					return 0;
-				}else
-					return 0;
-			}
-		});
-		if(index <= this.position){
-			this.position++;
-		}
-		this.dispatchEvent("insert");
-	};
+    CommentManager.prototype.load = function (a) {
+        this.timeline = a;
+        this.timeline.sort(function (a, b) {
+            if (a.stime > b.stime)
+                return 2;
+            else if (a.stime < b.stime)
+                return -2;
+            else {
+                if (a.date > b.date)
+                    return 1;
+                else if (a.date < b.date)
+                    return -1;
+                else if (a.dbid != null && b.dbid != null) {
+                    if (a.dbid > b.dbid)
+                        return 1;
+                    else if (a.dbid < b.dbid)
+                        return -1;
+                    return 0;
+                } else
+                    return 0;
+            }
+        });
+        this.dispatchEvent("load");
+    };
 
-	CommentManager.prototype.clear = function(){
-		while(this.runline.length > 0){
-			this.runline[0].finish();
-		}
-		this.dispatchEvent("clear");
-	};
+    CommentManager.prototype.insert = function (c) {
+        var index = BinArray.binsert(this.timeline, c, function (a, b) {
+            if (a.stime > b.stime)
+                return 2;
+            else if (a.stime < b.stime)
+                return -2;
+            else {
+                if (a.date > b.date)
+                    return 1;
+                else if (a.date < b.date)
+                    return -1;
+                else if (a.dbid != null && b.dbid != null) {
+                    if (a.dbid > b.dbid)
+                        return 1;
+                    else if (a.dbid < b.dbid)
+                        return -1;
+                    return 0;
+                } else
+                    return 0;
+            }
+        });
+        if (index <= this.position) {
+            this.position++;
+        }
+        this.dispatchEvent("insert");
+    };
 
-	CommentManager.prototype.setBounds = function(){
-		this.width = this.stage.offsetWidth;
-		this.height= this.stage.offsetHeight;
-		this.dispatchEvent("resize");
-		for(var comAlloc in this.csa){
-			this.csa[comAlloc].setBounds(this.width,this.height);
-		}
-		// Update 3d perspective
-		this.stage.style.perspective = this.width * Math.tan(40 * Math.PI/180) / 2 + "px";
-		this.stage.style.webkitPerspective = this.width * Math.tan(40 * Math.PI/180) / 2 + "px";
-	};
-	CommentManager.prototype.init = function(){
-		this.setBounds();
-		if(this.filter == null)
-			this.filter = new CommentFilter(); //Only create a filter if none exist
-	};
-	CommentManager.prototype.time = function(time){
-		time = time - 1;
-		if(this.position >= this.timeline.length || Math.abs(this.lastPos - time) >= 2000){
-			this.seek(time);
-			this.lastPos = time;
-			if(this.timeline.length <= this.position)
-				return;
-		}else{
-			this.lastPos = time;
-		}
-		for(;this.position < this.timeline.length;this.position++){
-			if(this.options.limit > 0 && this.runline.length > this.limiter) break;
-			if(this.validate(this.timeline[this.position]) && this.timeline[this.position]['stime']<=time){
-				this.send(this.timeline[this.position]);
-			}else{
-				break;
-			}
-		}
-	};
-	CommentManager.prototype.rescale = function(){
-	
-	};
-	CommentManager.prototype.send = function(data){
-		if(data.mode === 8){
-			console.log(data);
-			if(this.scripting){
-				console.log(this.scripting.eval(data.code));
-			}
-			return;
-		}
-		if(this.filter != null){
-			data = this.filter.doModify(data);
-			if(data == null) return;
-		}
-		if(data.mode === 1 || data.mode === 2 || data.mode === 6){
-			var cmt = new ScrollComment(this, data);
-		}else{
-			var cmt = new CoreComment(this, data);
-		}
-		switch(cmt.mode){
-			case 1:cmt.align = 0;break;
-			case 2:cmt.align = 2;break;
-			case 4:cmt.align = 2;break;
-			case 5:cmt.align = 0;break;
-			case 6:cmt.align = 1;break;
-		}
-		cmt.init();
-		this.stage.appendChild(cmt.dom);
-		switch(cmt.mode){
-			default:
-			case 1:{this.csa.scroll.add(cmt);}break;
-			case 2:{this.csa.scrollbtm.add(cmt);}break;
-			case 4:{this.csa.bottom.add(cmt);}break;
-			case 5:{this.csa.top.add(cmt);}break;
-			case 6:{this.csa.reverse.add(cmt);}break;
-			case 17:
-			case 7:{
-				if(data.rY !== 0 || data.rZ !== 0){
-					/** TODO: revise when browser manufacturers make up their mind on Transform APIs **/
-					cmt.dom.style.transform = getRotMatrix(data.rY, data.rZ);
-					cmt.dom.style.webkitTransform = getRotMatrix(data.rY, data.rZ);
-					cmt.dom.style.OTransform = getRotMatrix(data.rY, data.rZ);
-					cmt.dom.style.MozTransform = getRotMatrix(data.rY, data.rZ);
-					cmt.dom.style.MSTransform = getRotMatrix(data.rY, data.rZ);
-				}
-			}break;
-		}
-		cmt.y = cmt.y;
-		this.dispatchEvent("enterComment", cmt);
-		this.runline.push(cmt);
-	};
-	CommentManager.prototype.sendComment = function(data){
-		console.log("CommentManager.sendComment is deprecated. Please use send instead");
-		this.send(data); // Wrapper for Backwards Compatible APIs
-	};
-	CommentManager.prototype.finish = function(cmt){
-		this.dispatchEvent("exitComment", cmt);
-		this.stage.removeChild(cmt.dom);
-		var index = this.runline.indexOf(cmt);
-		if(index >= 0){
-			this.runline.splice(index, 1);
-		}
-		switch(cmt.mode){
-			default:
-			case 1:{this.csa.scroll.remove(cmt);}break;
-			case 2:{this.csa.scrollbtm.remove(cmt);}break;
-			case 4:{this.csa.bottom.remove(cmt);}break;
-			case 5:{this.csa.top.remove(cmt);}break;
-			case 6:{this.csa.reverse.remove(cmt);}break;
-			case 7:break;
-		}
-	};
-	CommentManager.prototype.addEventListener = function(event, listener){
-		if(typeof this._listeners[event] !== "undefined"){
-			this._listeners[event].push(listener);
-		}else{
-			this._listeners[event] = [listener];
-		}
-	};
-	CommentManager.prototype.dispatchEvent = function(event, data){
-		if(typeof this._listeners[event] !== "undefined"){
-			for(var i = 0; i < this._listeners[event].length; i++){
-				try{
-					this._listeners[event][i](data);
-				}catch(e){
-					console.err(e.stack);
-				}
-			}
-		}
-	};
-	/** Static Functions **/
-	CommentManager.prototype.onTimerEvent = function(timePassed,cmObj){
-		for(var i= 0;i < cmObj.runline.length; i++){
-			var cmt = cmObj.runline[i];
-			if(cmt.hold){
-				continue;
-			}
-			cmt.time(timePassed);
-		}
-	};
-	return CommentManager;
+    CommentManager.prototype.clear = function () {
+        while (this.runline.length > 0) {
+            this.runline[0].finish();
+        }
+        this.dispatchEvent("clear");
+    };
+
+    CommentManager.prototype.setBounds = function () {
+        this.width = this.stage.offsetWidth;
+        this.height = this.stage.offsetHeight;
+        this.dispatchEvent("resize");
+        for (var comAlloc in this.csa) {
+            this.csa[comAlloc].setBounds(this.width, this.height);
+        }
+        // Update 3d perspective
+        this.stage.style.perspective = this.width * Math.tan(40 * Math.PI / 180) / 2 + "px";
+        this.stage.style.webkitPerspective = this.width * Math.tan(40 * Math.PI / 180) / 2 + "px";
+    };
+    CommentManager.prototype.init = function () {
+        this.setBounds();
+        if (this.filter == null)
+            this.filter = new CommentFilter(); //Only create a filter if none exist
+    };
+    CommentManager.prototype.time = function (time) {
+        time = time - 1;
+        if (this.position >= this.timeline.length || Math.abs(this.lastPos - time) >= 2000) {
+            this.seek(time);
+            this.lastPos = time;
+            if (this.timeline.length <= this.position)
+                return;
+        } else {
+            this.lastPos = time;
+        }
+        for (; this.position < this.timeline.length; this.position++) {
+            if (this.options.limit > 0 && this.runline.length > this.limiter)
+                break;
+            if (this.validate(this.timeline[this.position]) && this.timeline[this.position]['stime'] <= time) {
+                this.send(this.timeline[this.position]);
+            } else {
+                break;
+            }
+        }
+    };
+    CommentManager.prototype.rescale = function () {
+
+    };
+    CommentManager.prototype.send = function (data) {
+        if (data.mode === 8) {
+            console.log(data);
+            if (this.scripting) {
+                console.log(this.scripting.eval(data.code));
+            }
+            return;
+        }
+        if (this.filter != null) {
+            data = this.filter.doModify(data);
+            if (data == null)
+                return;
+        }
+        if (data.mode === 1 || data.mode === 2 || data.mode === 6) {
+            var cmt = new ScrollComment(this, data);
+        } else {
+            var cmt = new CoreComment(this, data);
+        }
+        switch (cmt.mode) {
+            case 1:
+                cmt.align = 0;
+                break;
+            case 2:
+                cmt.align = 2;
+                break;
+            case 4:
+                cmt.align = 2;
+                break;
+            case 5:
+                cmt.align = 0;
+                break;
+            case 6:
+                cmt.align = 1;
+                break;
+        }
+        cmt.init();
+        this.stage.appendChild(cmt.dom);
+        switch (cmt.mode) {
+            default:
+            case 1:
+                {
+                    this.csa.scroll.add(cmt);
+                }
+                break;
+            case 2:
+                {
+                    this.csa.scrollbtm.add(cmt);
+                }
+                break;
+            case 4:
+                {
+                    this.csa.bottom.add(cmt);
+                }
+                break;
+            case 5:
+                {
+                    this.csa.top.add(cmt);
+                }
+                break;
+            case 6:
+                {
+                    this.csa.reverse.add(cmt);
+                }
+                break;
+            case 17:
+            case 7:
+                {
+                    if (data.rY !== 0 || data.rZ !== 0) {
+                        /** TODO: revise when browser manufacturers make up their mind on Transform APIs **/
+                        cmt.dom.style.transform = getRotMatrix(data.rY, data.rZ);
+                        cmt.dom.style.webkitTransform = getRotMatrix(data.rY, data.rZ);
+                        cmt.dom.style.OTransform = getRotMatrix(data.rY, data.rZ);
+                        cmt.dom.style.MozTransform = getRotMatrix(data.rY, data.rZ);
+                        cmt.dom.style.MSTransform = getRotMatrix(data.rY, data.rZ);
+                    }
+                }
+                break;
+        }
+        cmt.y = cmt.y;
+        this.dispatchEvent("enterComment", cmt);
+        this.runline.push(cmt);
+    };
+    CommentManager.prototype.sendComment = function (data) {
+        console.log("CommentManager.sendComment is deprecated. Please use send instead");
+        this.send(data); // Wrapper for Backwards Compatible APIs
+    };
+    CommentManager.prototype.finish = function (cmt) {
+        this.dispatchEvent("exitComment", cmt);
+        this.stage.removeChild(cmt.dom);
+        var index = this.runline.indexOf(cmt);
+        if (index >= 0) {
+            this.runline.splice(index, 1);
+        }
+        switch (cmt.mode) {
+            default:
+            case 1:
+                {
+                    this.csa.scroll.remove(cmt);
+                }
+                break;
+            case 2:
+                {
+                    this.csa.scrollbtm.remove(cmt);
+                }
+                break;
+            case 4:
+                {
+                    this.csa.bottom.remove(cmt);
+                }
+                break;
+            case 5:
+                {
+                    this.csa.top.remove(cmt);
+                }
+                break;
+            case 6:
+                {
+                    this.csa.reverse.remove(cmt);
+                }
+                break;
+            case 7:
+                break;
+        }
+    };
+    CommentManager.prototype.addEventListener = function (event, listener) {
+        if (typeof this._listeners[event] !== "undefined") {
+            this._listeners[event].push(listener);
+        } else {
+            this._listeners[event] = [listener];
+        }
+    };
+    CommentManager.prototype.dispatchEvent = function (event, data) {
+        if (typeof this._listeners[event] !== "undefined") {
+            for (var i = 0; i < this._listeners[event].length; i++) {
+                try {
+                    this._listeners[event][i](data);
+                } catch (e) {
+                    console.err(e.stack);
+                }
+            }
+        }
+    };
+    /** Static Functions **/
+    CommentManager.prototype.onTimerEvent = function (timePassed, cmObj) {
+        for (var i = 0; i < cmObj.runline.length; i++) {
+            var cmt = cmObj.runline[i];
+            if (cmt.hold) {
+                continue;
+            }
+            cmt.time(timePassed);
+        }
+    };
+    return CommentManager;
 })();
 
 /** 
@@ -955,97 +1045,97 @@ var CommentManager = (function() {
  * @license MIT License
  * An alternative format comment parser
  */
-function AcfunParser(jsond){
-	var list = [];
-	try{
-		var jsondt = JSON.parse(jsond);
-	}catch(e){
-		console.log('Error: Could not parse json list!');
-		return [];
-	}
-	for(var i=0;i<jsondt.length;i++){
-		//Read each comment and generate a correct comment object
-		var data = {};
-		var xc = jsondt[i]['c'].split(',');
-		if(xc.length > 0){
-			data.stime = parseFloat(xc[0]) * 1000;
-			data.color = parseInt(xc[1])
-			data.mode = parseInt(xc[2]);
-			data.size = parseInt(xc[3]);
-			data.hash = xc[4];
-			data.date = parseInt(xc[5]);
-			data.position = "absolute";
-			if(data.mode != 7){
-				data.text = jsondt[i].m.replace(/(\/n|\\n|\n|\r\n|\\r)/g,"\n");
-				data.text = data.text.replace(/\r/g,"\n");
-				data.text = data.text.replace(/\s/g,"\u00a0");
-			}else{
-				data.text = jsondt[i].m;
-			}
-			if(data.mode == 7){
-				//High level positioned dm
-				try{
-					var x = JSON.parse(data.text);
-				}catch(e){
-					console.log('[Err] Error parsing internal data for comment');
-					console.log('[Dbg] ' + data.text);
-					continue;
-				}
-				data.position = "relative";
-				data.text = x.n; /*.replace(/\r/g,"\n");*/
-				data.text = data.text.replace(/\ /g,"\u00a0");
-				if(x.a != null){
-					data.opacity = x.a;
-				}else{
-					data.opacity = 1;
-				}
-				if(x.p != null){
-					data.x = x.p.x / 1000; // relative position
-					data.y = x.p.y / 1000;
-				}else{
-					data.x = 0;
-					data.y = 0;
-				}
-				data.shadow = x.b;
-				data.dur = 4000;
-				if(x.l != null)
-					data.moveDelay = x.l * 1000;
-				if(x.z != null && x.z.length > 0){
-					data.movable = true;
-					data.motion = [];
-					var moveDuration = 0;
-					var last = {x:data.x, y:data.y, alpha:data.opacity, color:data.color};
-					for(var m = 0; m < x.z.length; m++){
-						var dur = x.z[m].l != null ? (x.z[m].l * 1000) : 500;
-						moveDuration += dur;
-						var motion = {
-							x:{from:last.x, to:x.z[m].x/1000, dur: dur, delay: 0},
-							y:{from:last.y, to:x.z[m].y/1000, dur: dur, delay: 0}
-						};
-						last.x = motion.x.to;
-						last.y = motion.y.to;
-						if(x.z[m].t !== last.alpha){
-							motion.alpha = {from:last.alpha, to:x.z[m].t, dur: dur, delay: 0};
-							last.alpha = motion.alpha.to;
-						}
-						if(x.z[m].c != null && x.z[m].c !== last.color){
-							motion.color = {from:last.color, to:x.z[m].c, dur: dur, delay: 0};
-							last.color = motion.color.to;
-						}
-						data.motion.push(motion);
-					}
-					data.dur = moveDuration + (data.moveDelay ? data.moveDelay : 0);
-				}
-				if(x.r != null && x.k != null){
-					data.rX = x.r;
-					data.rY = x.k;
-				}
-				
-			}
-			list.push(data);
-		}
-	}
-	return list;
+function AcfunParser(jsond) {
+    var list = [];
+    try {
+        var jsondt = JSON.parse(jsond);
+    } catch (e) {
+        console.log('Error: Could not parse json list!');
+        return [];
+    }
+    for (var i = 0; i < jsondt.length; i++) {
+        //Read each comment and generate a correct comment object
+        var data = {};
+        var xc = jsondt[i]['c'].split(',');
+        if (xc.length > 0) {
+            data.stime = parseFloat(xc[0]) * 1000;
+            data.color = parseInt(xc[1])
+            data.mode = parseInt(xc[2]);
+            data.size = parseInt(xc[3]);
+            data.hash = xc[4];
+            data.date = parseInt(xc[5]);
+            data.position = "absolute";
+            if (data.mode != 7) {
+                data.text = jsondt[i].m.replace(/(\/n|\\n|\n|\r\n|\\r)/g, "\n");
+                data.text = data.text.replace(/\r/g, "\n");
+                data.text = data.text.replace(/\s/g, "\u00a0");
+            } else {
+                data.text = jsondt[i].m;
+            }
+            if (data.mode == 7) {
+                //High level positioned dm
+                try {
+                    var x = JSON.parse(data.text);
+                } catch (e) {
+                    console.log('[Err] Error parsing internal data for comment');
+                    console.log('[Dbg] ' + data.text);
+                    continue;
+                }
+                data.position = "relative";
+                data.text = x.n; /*.replace(/\r/g,"\n");*/
+                data.text = data.text.replace(/\ /g, "\u00a0");
+                if (x.a != null) {
+                    data.opacity = x.a;
+                } else {
+                    data.opacity = 1;
+                }
+                if (x.p != null) {
+                    data.x = x.p.x / 1000; // relative position
+                    data.y = x.p.y / 1000;
+                } else {
+                    data.x = 0;
+                    data.y = 0;
+                }
+                data.shadow = x.b;
+                data.dur = 4000;
+                if (x.l != null)
+                    data.moveDelay = x.l * 1000;
+                if (x.z != null && x.z.length > 0) {
+                    data.movable = true;
+                    data.motion = [];
+                    var moveDuration = 0;
+                    var last = {x: data.x, y: data.y, alpha: data.opacity, color: data.color};
+                    for (var m = 0; m < x.z.length; m++) {
+                        var dur = x.z[m].l != null ? (x.z[m].l * 1000) : 500;
+                        moveDuration += dur;
+                        var motion = {
+                            x: {from: last.x, to: x.z[m].x / 1000, dur: dur, delay: 0},
+                            y: {from: last.y, to: x.z[m].y / 1000, dur: dur, delay: 0}
+                        };
+                        last.x = motion.x.to;
+                        last.y = motion.y.to;
+                        if (x.z[m].t !== last.alpha) {
+                            motion.alpha = {from: last.alpha, to: x.z[m].t, dur: dur, delay: 0};
+                            last.alpha = motion.alpha.to;
+                        }
+                        if (x.z[m].c != null && x.z[m].c !== last.color) {
+                            motion.color = {from: last.color, to: x.z[m].c, dur: dur, delay: 0};
+                            last.color = motion.color.to;
+                        }
+                        data.motion.push(motion);
+                    }
+                    data.dur = moveDuration + (data.moveDelay ? data.moveDelay : 0);
+                }
+                if (x.r != null && x.k != null) {
+                    data.rX = x.r;
+                    data.rY = x.k;
+                }
+
+            }
+            list.push(data);
+        }
+    }
+    return list;
 }
 
 /** 
@@ -1053,164 +1143,168 @@ function AcfunParser(jsond){
  * @license MIT License
  * Takes in an XMLDoc/LooseXMLDoc and parses that into a Generic Comment List
  **/
-function BilibiliParser(xmlDoc, text, warn){	
-	function format(string){
-		// Format the comment text to be JSON Valid.
-		return string.replace(/\t/,"\\t");	
-	}
-	
-	if(xmlDoc !== null){
-		var elems = xmlDoc.getElementsByTagName('d');
-	}else{
-		if(!document || !document.createElement){
-			// Maybe we are in a restricted context? Bail.
-			return [];
-		}
-		if(warn){
-			if(!confirm("XML Parse Error. \n Allow tag soup parsing?\n[WARNING: This is unsafe.]")){
-				return [];
-			}
-		}else{
-			// TODO: Make this safer in the future
-			text = text.replace(new RegExp("</([^d])","g"), "</disabled $1");
-			text = text.replace(new RegExp("</(\S{2,})","g"), "</disabled $1");
-			text = text.replace(new RegExp("<([^d/]\W*?)","g"), "<disabled $1");
-			text = text.replace(new RegExp("<([^/ ]{2,}\W*?)","g"), "<disabled $1");
-		}
-		var tmp = document.createElement("div");
-		tmp.innerHTML = text;
-		var elems = tmp.getElementsByTagName('d');
-	}
-	
-	var tlist = [];
-	for(var i=0;i < elems.length;i++){
-		if(elems[i].getAttribute('p') != null){
-			var opt = elems[i].getAttribute('p').split(',');
-			if(!elems[i].childNodes[0])
-			  continue;
-			var text = elems[i].childNodes[0].nodeValue;
-			var obj = {};
-			obj.stime = Math.round(parseFloat(opt[0])*1000);
-			obj.size = parseInt(opt[2]);
-			obj.color = parseInt(opt[3]);
-			obj.mode = parseInt(opt[1]);
-			obj.date = parseInt(opt[4]);
-			obj.pool = parseInt(opt[5]);
-			obj.position = "absolute";
-			if(opt[7] != null)
-				obj.dbid = parseInt(opt[7]);
-			obj.hash = opt[6];
-			obj.border = false;
-			if(obj.mode < 7){
-				obj.text = text.replace(/(\/n|\\n|\n|\r\n)/g, "\n");
-			}else{
-				if(obj.mode == 7){
-					try{
-						adv = JSON.parse(format(text));
-						obj.shadow = true;
-						obj.x = parseFloat(adv[0]);
-						obj.y = parseFloat(adv[1]);
-						if(Math.floor(obj.x) < obj.x || Math.floor(obj.y) < obj.y){
-							obj.position = "relative";
-						}
-						obj.text = adv[4].replace(/(\/n|\\n|\n|\r\n)/g, "\n");
-						obj.rZ = 0;
-						obj.rY = 0;
-						if(adv.length >= 7){
-							obj.rZ = parseInt(adv[5], 10);
-							obj.rY = parseInt(adv[6], 10);
-						}
-						obj.motion = [];
-						obj.movable = false;
-						if(adv.length >= 11){
-							obj.movable = true;
-							var singleStepDur = 500;
-							var motion = {
-								x:{from: obj.x, to:parseFloat(adv[7]), dur:singleStepDur, delay:0},
-								y:{from: obj.y, to:parseFloat(adv[8]), dur:singleStepDur, delay:0},
-							};
-							if(adv[9] !== ''){
-								singleStepDur = parseInt(adv[9], 10);
-								motion.x.dur = singleStepDur;
-								motion.y.dur = singleStepDur;
-							}
-							if(adv[10] !== ''){
-								motion.x.delay = parseInt(adv[10], 10);
-								motion.y.delay = parseInt(adv[10], 10);
-							}
-							if(adv.length > 11){
-								obj.shadow = adv[11];
-								if(obj.shadow === "true"){
-									obj.shadow = true;
-								}
-								if(obj.shadow === "false"){
-									obj.shadow = false;
-								}
-								if(adv[12] != null){
-									obj.font = adv[12];
-								}
-								if(adv.length > 14){
-									// Support for Bilibili Advanced Paths
-									if(obj.position === "relative"){
-										console.log("Cannot mix relative and absolute positioning");
-										obj.position = "absolute";
-									}
-									var path = adv[14];
-									var lastPoint = {x:motion.x.from, y:motion.y.from};
-									var pathMotion = [];
-									var regex = new RegExp("([a-zA-Z])\\s*(\\d+)[, ](\\d+)","g");
-									var counts = path.split(/[a-zA-Z]/).length - 1;
-									var m = regex.exec(path);
-									while(m !== null){
-										switch(m[1]){
-											case "M":{
-												lastPoint.x = parseInt(m[2],10);
-												lastPoint.y = parseInt(m[3],10);
-											}break;
-											case "L":{
-												pathMotion.push({
-													"x":{"from":lastPoint.x, "to":parseInt(m[2],10), "dur": singleStepDur / counts, "delay": 0},
-													"y":{"from":lastPoint.y, "to":parseInt(m[3],10), "dur": singleStepDur / counts, "delay": 0}
-												});
-												lastPoint.x = parseInt(m[2],10);
-												lastPoint.y = parseInt(m[3],10);
-											}break;
-										}
-										m = regex.exec(path);
-									}
-									motion = null;
-									obj.motion = pathMotion;
-								}
-							}
-							if(motion !== null){
-								obj.motion.push(motion);
-							}
-						}
-						obj.dur = 2500;
-						if(adv[3] < 12){
-							obj.dur = adv[3] * 1000;
-						}
-						var tmp = adv[2].split('-');
-						if(tmp != null && tmp.length>1){
-							var alphaFrom = parseFloat(tmp[0]);
-							var alphaTo = parseFloat(tmp[1]);
-							obj.opacity = alphaFrom;
-							if(alphaFrom !== alphaTo){
-								obj.alpha = {from:alphaFrom, to:alphaTo}
-							}
-						}
-					}catch(e){
-						console.log('[Err] Error occurred in JSON parsing');
-						console.log('[Dbg] ' + text);
-					}
-				}else if(obj.mode == 8){
-					obj.code = text; //Code comments are special
-				}
-			}
-			if(obj.text != null)
-				obj.text = obj.text.replace(/\u25a0/g,"\u2588");
-			tlist.push(obj);
-		}
-	}
-	return tlist;
+function BilibiliParser(xmlDoc, text, warn) {
+    function format(string) {
+        // Format the comment text to be JSON Valid.
+        return string.replace(/\t/, "\\t");
+    }
+
+    if (xmlDoc !== null) {
+        var elems = xmlDoc.getElementsByTagName('d');
+    } else {
+        if (!document || !document.createElement) {
+            // Maybe we are in a restricted context? Bail.
+            return [];
+        }
+        if (warn) {
+            if (!confirm("XML Parse Error. \n Allow tag soup parsing?\n[WARNING: This is unsafe.]")) {
+                return [];
+            }
+        } else {
+            // TODO: Make this safer in the future
+            text = text.replace(new RegExp("</([^d])", "g"), "</disabled $1");
+            text = text.replace(new RegExp("</(\S{2,})", "g"), "</disabled $1");
+            text = text.replace(new RegExp("<([^d/]\W*?)", "g"), "<disabled $1");
+            text = text.replace(new RegExp("<([^/ ]{2,}\W*?)", "g"), "<disabled $1");
+        }
+        var tmp = document.createElement("div");
+        tmp.innerHTML = text;
+        var elems = tmp.getElementsByTagName('d');
+    }
+
+    var tlist = [];
+    for (var i = 0; i < elems.length; i++) {
+        if (elems[i].getAttribute('p') != null) {
+            var opt = elems[i].getAttribute('p').split(',');
+            if (!elems[i].childNodes[0])
+                continue;
+            var text = elems[i].childNodes[0].nodeValue;
+            var obj = {};
+            obj.stime = Math.round(parseFloat(opt[0]) * 1000);
+            obj.size = parseInt(opt[2]);
+            obj.color = parseInt(opt[3]);
+            obj.mode = parseInt(opt[1]);
+            obj.date = parseInt(opt[4]);
+            obj.pool = parseInt(opt[5]);
+            obj.position = "absolute";
+            if (opt[7] != null)
+                obj.dbid = parseInt(opt[7]);
+            obj.hash = opt[6];
+            obj.border = false;
+            if (obj.mode < 7) {
+                obj.text = text.replace(/(\/n|\\n|\n|\r\n)/g, "\n");
+            } else {
+                if (obj.mode == 7) {
+                    try {
+                        adv = JSON.parse(format(text));
+                        obj.shadow = true;
+                        obj.x = parseFloat(adv[0]);
+                        obj.y = parseFloat(adv[1]);
+                        if (Math.floor(obj.x) < obj.x || Math.floor(obj.y) < obj.y) {
+                            obj.position = "relative";
+                        }
+                        obj.text = adv[4].replace(/(\/n|\\n|\n|\r\n)/g, "\n");
+                        obj.rZ = 0;
+                        obj.rY = 0;
+                        if (adv.length >= 7) {
+                            obj.rZ = parseInt(adv[5], 10);
+                            obj.rY = parseInt(adv[6], 10);
+                        }
+                        obj.motion = [];
+                        obj.movable = false;
+                        if (adv.length >= 11) {
+                            obj.movable = true;
+                            var singleStepDur = 500;
+                            var motion = {
+                                x: {from: obj.x, to: parseFloat(adv[7]), dur: singleStepDur, delay: 0},
+                                y: {from: obj.y, to: parseFloat(adv[8]), dur: singleStepDur, delay: 0},
+                            };
+                            if (adv[9] !== '') {
+                                singleStepDur = parseInt(adv[9], 10);
+                                motion.x.dur = singleStepDur;
+                                motion.y.dur = singleStepDur;
+                            }
+                            if (adv[10] !== '') {
+                                motion.x.delay = parseInt(adv[10], 10);
+                                motion.y.delay = parseInt(adv[10], 10);
+                            }
+                            if (adv.length > 11) {
+                                obj.shadow = adv[11];
+                                if (obj.shadow === "true") {
+                                    obj.shadow = true;
+                                }
+                                if (obj.shadow === "false") {
+                                    obj.shadow = false;
+                                }
+                                if (adv[12] != null) {
+                                    obj.font = adv[12];
+                                }
+                                if (adv.length > 14) {
+                                    // Support for Bilibili Advanced Paths
+                                    if (obj.position === "relative") {
+                                        console.log("Cannot mix relative and absolute positioning");
+                                        obj.position = "absolute";
+                                    }
+                                    var path = adv[14];
+                                    var lastPoint = {x: motion.x.from, y: motion.y.from};
+                                    var pathMotion = [];
+                                    var regex = new RegExp("([a-zA-Z])\\s*(\\d+)[, ](\\d+)", "g");
+                                    var counts = path.split(/[a-zA-Z]/).length - 1;
+                                    var m = regex.exec(path);
+                                    while (m !== null) {
+                                        switch (m[1]) {
+                                            case "M":
+                                                {
+                                                    lastPoint.x = parseInt(m[2], 10);
+                                                    lastPoint.y = parseInt(m[3], 10);
+                                                }
+                                                break;
+                                            case "L":
+                                                {
+                                                    pathMotion.push({
+                                                        "x": {"from": lastPoint.x, "to": parseInt(m[2], 10), "dur": singleStepDur / counts, "delay": 0},
+                                                        "y": {"from": lastPoint.y, "to": parseInt(m[3], 10), "dur": singleStepDur / counts, "delay": 0}
+                                                    });
+                                                    lastPoint.x = parseInt(m[2], 10);
+                                                    lastPoint.y = parseInt(m[3], 10);
+                                                }
+                                                break;
+                                        }
+                                        m = regex.exec(path);
+                                    }
+                                    motion = null;
+                                    obj.motion = pathMotion;
+                                }
+                            }
+                            if (motion !== null) {
+                                obj.motion.push(motion);
+                            }
+                        }
+                        obj.dur = 2500;
+                        if (adv[3] < 12) {
+                            obj.dur = adv[3] * 1000;
+                        }
+                        var tmp = adv[2].split('-');
+                        if (tmp != null && tmp.length > 1) {
+                            var alphaFrom = parseFloat(tmp[0]);
+                            var alphaTo = parseFloat(tmp[1]);
+                            obj.opacity = alphaFrom;
+                            if (alphaFrom !== alphaTo) {
+                                obj.alpha = {from: alphaFrom, to: alphaTo}
+                            }
+                        }
+                    } catch (e) {
+                        console.log('[Err] Error occurred in JSON parsing');
+                        console.log('[Dbg] ' + text);
+                    }
+                } else if (obj.mode == 8) {
+                    obj.code = text; //Code comments are special
+                }
+            }
+            if (obj.text != null)
+                obj.text = obj.text.replace(/\u25a0/g, "\u2588");
+            tlist.push(obj);
+        }
+    }
+    return tlist;
 }

@@ -3,9 +3,7 @@
     Created on : 2014-12-2, 19:19:20
     Author     : JAWEN
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:include page="header.jsp" />
 <html class="ui-mobile-rendering">
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,26 +16,26 @@
     </head>
     <body>
         <div data-role="header" data-theme="b">
-            <a href="game" data-icon="back" class="back ui-btn-left" id="back">Back</a>
-            <h1>投票成功！</h1>
+            <a href="login" data-icon="back" class="back ui-btn-left" id="back">Back</a>
+            <h1>祝福成功！</h1>
         </div>
 
         <div data-role="content" data-theme="b">
-            <h3><%= session.getAttribute("login") %>, 您现在排在第${rank} 位。</h3>
+            <h3>您的祝福已经收到。</h3>
             <p>具体信息如下：</p>
 
             <ol data-role="listview" >
-                <li>金币： ${coins}</li>
-                <li>时间： ${date}</li>
+                <li>昵称： ${emp.nickname}</li>
+                <li>祝福： ${emp.comments}</li>
             </ol>
         </div>
             
         <script>
             $(document).ready(function () {
                 $('#back').click(function () {
-                    response.sendRedirect("game");
+                    response.sendRedirect("login");
                 });
-            });            
+            });
         </script>
     </body>
 </html>

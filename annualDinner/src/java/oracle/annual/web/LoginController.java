@@ -5,15 +5,10 @@
  */
 package oracle.annual.web;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
@@ -29,16 +24,13 @@ public class LoginController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView afterlogin(@ModelAttribute Employee employee, HttpServletRequest  request, HttpServletResponse response) {
+    public ModelAndView afterlogin(@ModelAttribute Employee employee) {
         System.out.println("welcome to afterlogin");
-        System.out.println(employee.getEmailAddr());
-        System.out.println(employee.getEmployeeID());
+        System.out.println(employee.getNickname());
+        System.out.println(employee.getComments());
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("game");
+        modelAndView.setViewName("afterbet");
         modelAndView.addObject("emp",employee);
-        HttpSession session = request.getSession() ;
-        session.setAttribute("connected", "true");
-        session.setAttribute("login", employee.getEmailAddr());
         return modelAndView;
     }
 }

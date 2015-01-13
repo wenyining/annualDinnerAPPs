@@ -7,18 +7,19 @@ package oracle.annual.web;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.support.SessionStatus;
 
 /**
  *
  * @author JAWEN
  */
-@Controller
-public class GameController {
 
-    @RequestMapping("/game")
-    public ModelAndView gameCenter() {
-        ModelAndView modelAndView = new ModelAndView("game", "command", null);
-        return modelAndView;
+@Controller
+public class LogoutController {
+    
+    @RequestMapping("/logout")
+    public String logout(SessionStatus status) {
+        status.setComplete();
+        return "logout";
     }
 }

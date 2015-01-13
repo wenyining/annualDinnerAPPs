@@ -13,13 +13,17 @@
         <script src="js/jquery-1.7.1.min.js"></script>
         <script>
             var st, ctx;
-            var speed = 1000;
+            var speed = 5000;
             var start = 0;
             var length = 21;
-            var font = "200% Arial"
-            var text = new Array("你好，新年快乐", "11111", "22", "333", "4444", "5555", "66", "777777", "88888", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25");
+            var font = "200% Arial";
+            var text;
+            var pathname = window.location.pathname;
+
+
 
             $(document).ready(function () {
+                getText();
                 st = $('#subtitle')[0];
                 ctx = st.getContext("2d");
                 //ctx.width = device-width;
@@ -27,6 +31,7 @@
                 ctx.font = font;
                 ctx.textAlign = 'left';
                 setInterval(draw, speed);
+                alert(pathname);
             });
 
             function draw() {
@@ -42,10 +47,10 @@
                 ctx.save();
                 ctx.fillStyle = "rgba(255,255,255," + alpha + ")";
                 //add blank between two lines
-                pad=0;
+                pad = 0;
                 for (i = start; i < start + length; i++) {
                     if (i < text.length) {
-                        ctx.fillText(text[i], st.width/2 - ctx.measureText(text[i]).width/2 - 30, st.height - 25 - (start + length - i) * 25 + pad * 10);
+                        ctx.fillText(text[i], st.width / 4 - ctx.measureText(text[i]).width / 2 - 30, st.height - 25 - (start + length - i) * 25 + pad * 10);
                     }
                     pad++;
                 }
@@ -65,6 +70,27 @@
 
             function getText() {
                 text = new Array("000000", "11111", "22", "333", "4444", "5555", "66", "777777", "88888", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25");
+
+                jQuery.support.cors = true;
+                $.ajax(
+                        {
+                            type: "get",
+                            url: '/annualDinner/employee.xml',
+                            datatype: 'xml',
+                            contentType: "text/application, charset=utf8",
+                            success: function (data) {
+                                //alert('success');              
+                                var employees =  $(data).find("employees").text();
+                                //alert(employees);
+                                text = employees.split('\n');
+                            },
+                            error: function (msg, url, line) {
+                                alert('error trapped in error: function(msg, url, line)');
+                                alert('msg = ' + msg + ', url = ' + url + ', line = ' + line);
+                                
+                                text = line.split('\n');
+                            }
+                        });
             }
 
             function restart() {
@@ -72,6 +98,23 @@
                 //reset start=0
                 start = 0;
             }
+
+            function encode_utf8(s) {
+                return unescape(encodeURIComponent(s));
+            }
+
+            function decode_utf8(s) {
+                return decodeURIComponent(escape(s));
+            }
+
+            function utf8_to_b64(str) {
+                return window.btoa(unescape(encodeURIComponent(str)));
+            }
+
+            function b64_to_utf8(str) {
+                return decodeURIComponent(escape(window.atob(str)));
+            }
+
 
         </script>
     </head>

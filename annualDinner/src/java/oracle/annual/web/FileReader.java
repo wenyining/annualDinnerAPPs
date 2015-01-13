@@ -41,7 +41,29 @@ public class FileReader {
      * 使用BufferedReader类读文本文件
      * @return 
      */
-    public static ArrayList<String> readFile(String file) {
+    public static ArrayList<byte[]> readFile(String file) {
+        ArrayList<byte[]> retArray = new ArrayList<byte[]>();
+        String line = "";
+        InputStreamReader reader;
+        BufferedReader br;
+        try {
+            reader = new InputStreamReader(new FileInputStream(file));
+            br = new BufferedReader(reader);
+            line = br.readLine();
+            while (line != null) {
+                System.out.println(line);
+                retArray.add(line.getBytes("utf-8"));
+                line = br.readLine();
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return retArray;
+    }
+    
+    
+    public static ArrayList<String> readFile2String(String file) {
         ArrayList<String> retArray = new ArrayList<String>();
         String line = "";
         InputStreamReader reader;

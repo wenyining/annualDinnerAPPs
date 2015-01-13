@@ -26,11 +26,11 @@ public class LoginController {
     @RequestMapping(method = RequestMethod.POST)
     public ModelAndView afterlogin(@ModelAttribute Employee employee) {
         System.out.println("welcome to afterlogin");
-        System.out.println(employee.getEmailAddr());
-        System.out.println(employee.getEmployeeID());
+        System.out.println(employee.getNickname());
+        System.out.println(employee.getComments());
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("game");
-        modelAndView.addObject("user",employee.getEmailAddr());
+        modelAndView.setViewName("afterbet");
+        modelAndView.addObject("emp",employee);
         return modelAndView;
     }
 }

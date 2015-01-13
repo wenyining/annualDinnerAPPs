@@ -1,10 +1,11 @@
 <%-- 
-    Document   : home
-    Created on : 2014-12-8, 10:56:22
+    Document   : logout
+    Created on : 2014-12-10, 20:20:43
     Author     : JAWEN
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:include page="header.jsp" />
 <!DOCTYPE html>
 <html class="ui-mobile-rendering">
     <head>
@@ -20,16 +21,9 @@
         <div data-role="header" data-theme="b">
             <h1>Welcome to Annual Dinner Game Center</h1>
         </div>
-
+        
         <div data-role="content" >
-            <h3>${emps.emailAddr}, Welcome to Annual Dinner Game Center</h3>
-            <p>Please choose the game you want to join and bet</p>
-            <ul data-role="listview" >
-                <li><a href="game/1">爱拼才会赢</a></li>
-                <li><a href="game/2">气象专家</a></li>
-                <li><a href="game/3">头脑风暴</a></li>
-                <li><a href="game/4">心有灵犀</a></li>
-            </ul>
+            <p>You've logout successfully.</p>
         </div>
     </body>
 </html>

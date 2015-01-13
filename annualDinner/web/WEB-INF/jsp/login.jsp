@@ -19,39 +19,74 @@
     </head>
     <body>
         <div data-role="header"  data-theme="b">
-            <h1>TK's Annual Dinner Games</h1>
+            <h1>Annual Dinner</h1>
         </div>
 
         <div data-role="content"  data-theme="b">
+            <p>���굽��,�������ף����</p>
             <form:form action="login" method="POST">
                 <table>
                     <div class="ui-field-contain ui-body ui-br" data-role="fieldcontain">
-                        <form:label class="ui-input-text" path="emailAddr">E-mail</form:label>
-                        <form:input type="email" path="emailAddr" placeholder="yourname@email.com" id="usermail"></form:input>
-                        </div>
-                        <div class="ui-field-contain ui-body ui-br" data-role="fieldcontain">
-                        <form:label class="ui-input-text" path="employeeID">Employee ID</form:label>
-                        <form:input type="password" path="employeeID" placeholder="password" id="gid"></form:input>
-                        </div>
-                        <fieldset class="ui-grid-a">
-                            <div class="ui-block-a" >
-                                <button type="reset" data-theme="d" id="cancelButton">Cancel</button>
-                            </div>
-                            <div class="ui-block-b">
-                                <button type="submit" data-theme="b" id="submitButton" >Submit</button>
-                            </div>
-                        </fieldset>
-                    </table>
+                        <form:label class="ui-input-text" path="nickname">�ǳ�</form:label>
+                        <form:input type="text" path="nickname" id="nickname"></form:input>
+                        <form:label class="ui-input-text" path="comments">ף����</form:label>
+                        <form:input type="text" path="comments"/>
+                    </div>
+                    <fieldset class="ui-grid-a">
+                        <button type="submit" data-theme="b" id="submitButton" >ȷ��</button>
+                    </fieldset>
+                </table>
             </form:form>
         </div>
+        
         <script>
-            $(document).ready(function () {
-                $('#clearButton').click(function () {
-                    alert('clear click!');
-                    $('#usermail').val("");
-                    $('#gid').val("");
-                });
+$(document).ready(function () {
+    
+    $('#submitButton').click(function () {
+        
+        jQuery.support.cors = true;
+        alert('login click!');
+        var formDataObj = {};
+        var formJqObj = $('#loginForm');
+        (function () {
+            formJqObj.find(":input").not("[type='submit']").not("[type='reset']").each(function () {
+                var thisInput = $(this);
+                formDataObj[thisInput.attr("name")] = thisInput.val();
+                if(thisInput.attr("name") === "USER_NAME"){
+                    Username = thisInput.val();
+                }
+                if(thisInput.attr("name") === "GUID"){
+                    UserId = thisInput.val();
+                }
             });
+        })();
+        console.log(JSON.stringify(formDataObj));
+        $.ajax(
+                {
+                    type: "post",
+                    url: '/comments',
+                    data: JSON.stringify(formDataObj),
+                    contentType: "application/json",
+                    dataType: "json",
+                    success: function (data) {
+                        //alert('success');
+                        $.each(data, function (i, theItem) {
+                            //alert('Key: '+ option.text + ' Value:' + option.value);
+                            
+                        });
+                        console.log(JSON.stringify(data));
+                        app.navigate("#home", {trigger: true, replace: true});
+                    },
+                    error: function (msg, url, line) {
+                        alert('error trapped in error: function(msg, url, line)');
+                        alert('msg = ' + msg + ', url = ' + url + ', line = ' + line);
+                        Username = '';
+                        UserId   = '';
+                    }
+                });
+    });
+});
+
         </script>
     </body>
 </html>

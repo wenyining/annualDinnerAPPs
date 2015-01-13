@@ -10,25 +10,15 @@ package oracle.annual.web;
  * @author JAWEN
  */
 public class Employee {
-
-    private String emailAddr;
-    private String employeeID;
     private String nickname;
+    private String comments;
 
-    public String getEmailAddr() {
-        return emailAddr;
+    public String getComments() {
+        return comments;
     }
 
-    public void setEmailAddr(String emailAddr) {
-        this.emailAddr = emailAddr;
-    }
-
-    public String getEmployeeID() {
-        return employeeID;
-    }
-
-    public void setEmployeeID(String employeeID) {
-        this.employeeID = employeeID;
+    public void setComments(String comments) {
+        this.comments = comments;
     }
 
     public String getNickname() {

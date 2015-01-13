@@ -13,7 +13,7 @@
         <script src="js/jquery-1.7.1.min.js"></script>
         <script>
             var st, ctx;
-            var speed = 5000;
+            var speed = 1000;
             var start = 0;
             var length = 21;
             var font = "200% Arial";

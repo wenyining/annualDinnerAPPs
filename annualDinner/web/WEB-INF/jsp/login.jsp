@@ -23,17 +23,17 @@
         </div>
 
         <div data-role="content"  data-theme="b">
-            <p>���굽��,�������ף����</p>
+            <p>新年到来,送上你的祝福吧</p>
             <form:form action="login" method="POST">
                 <table>
                     <div class="ui-field-contain ui-body ui-br" data-role="fieldcontain">
-                        <form:label class="ui-input-text" path="nickname">�ǳ�</form:label>
+                        <form:label class="ui-input-text" path="nickname">昵称</form:label>
                         <form:input type="text" path="nickname" id="nickname"></form:input>
-                        <form:label class="ui-input-text" path="comments">ף����</form:label>
+                        <form:label class="ui-input-text" path="comments">祝福：</form:label>
                         <form:input type="text" path="comments"/>
                     </div>
                     <fieldset class="ui-grid-a">
-                        <button type="submit" data-theme="b" id="submitButton" >ȷ��</button>
+                        <button type="submit" data-theme="b" id="submitButton" >确定</button>
                     </fieldset>
                 </table>
             </form:form>
